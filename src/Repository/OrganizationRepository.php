@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Organization;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @method Organization|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,11 @@ class OrganizationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Organization::class);
+    }
+
+    public function findAll()
+    {
+        return Yaml::parseFile('organizations.yaml')['organizations'];
     }
 
     // /**
