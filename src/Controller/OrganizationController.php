@@ -49,16 +49,6 @@ class OrganizationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="organization_show", methods={"GET"})
-     */
-    public function show(Organization $organization): Response
-    {
-        return $this->render('organization/show.html.twig', [
-            'organization' => $organization,
-        ]);
-    }
-
-    /**
      * @Route("/{id}/edit", name="organization_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Organization $organization): Response
