@@ -61,7 +61,7 @@ class OrganizationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            die("ok");
+            $organizationRepository->editByName($name, $organization);
 
 
             return $this->redirectToRoute('organization_index');

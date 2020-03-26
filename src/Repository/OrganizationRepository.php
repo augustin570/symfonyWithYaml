@@ -61,33 +61,14 @@ class OrganizationRepository extends ServiceEntityRepository
         $yaml = Yaml::dump(['organizations' => $organizations]);
         file_put_contents(self::FILE_NAME, $yaml);
     }
-
-    // /**
-    //  * @return Organization[] Returns an array of Organization objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function editByName(string $name, Organization $organizationEdited)
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $organizations = $this->findAll();
+        $organizationsSaved = [];
+        foreach ($organizations as $organization) {
+            $organizationsSaved[] = ($name == strtolower($organization['name'])) ? $organizationEdited->toArray() : $organization;
+        }
+        $yaml = Yaml::dump(['organizations' => $organizationsSaved]);
+        file_put_contents(self::FILE_NAME, $yaml);
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Organization
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
