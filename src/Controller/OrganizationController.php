@@ -63,7 +63,7 @@ class OrganizationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+
 
             return $this->redirectToRoute('organization_index');
         }
@@ -75,14 +75,18 @@ class OrganizationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="organization_delete", methods={"DELETE"})
+     * @Route("/{name}", name="organization_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Organization $organization): Response
+    public function delete(Request $request, OrganizationRepository $organizationRepository, string $name): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$organization->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($organization);
-            $entityManager->flush();
+        $organization = $organizationRepository->findOneByName($name);
+
+        if ($organization === null) {
+            return $this->redirectToRoute('organization_index');
+        }
+
+        if ($this->isCsrfTokenValid('delete'.$name, $request->request->get('_token'))) {
+            $organizationRepository->removeByName($name);
         }
 
         return $this->redirectToRoute('organization_index');

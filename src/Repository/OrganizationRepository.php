@@ -15,6 +15,8 @@ use Symfony\Component\Yaml\Yaml;
  */
 class OrganizationRepository extends ServiceEntityRepository
 {
+    const FILE_NAME = 'organizations.yaml';
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Organization::class);
@@ -22,13 +24,13 @@ class OrganizationRepository extends ServiceEntityRepository
 
     public function findAll()
     {
-        return Yaml::parseFile('organizations.yaml')['organizations'];
+        return Yaml::parseFile(self::FILE_NAME)['organizations'];
     }
 
-    public function findOneByName(string $name)
+    public function findOneByName(string $name): ?Organization
     {
         $name = strtolower($name);
-        $organizations = Yaml::parseFile('organizations.yaml')['organizations'];
+        $organizations = $this->findAll();
 
         foreach ($organizations as $organization) {
             if ($name == strtolower($organization['name'])) {
@@ -37,6 +39,19 @@ class OrganizationRepository extends ServiceEntityRepository
         }
 
         return null;
+    }
+
+    public function removeByName(string $name)
+    {
+        $organizations = $this->findAll();
+        $organizationsSaved = [];
+        foreach ($organizations as $organization) {
+            if ($name != strtolower($organization['name'])) {
+                $organizationsSaved[] = $organization;
+            }
+        }
+        $yaml = Yaml::dump(['organizations' => $organizationsSaved]);
+        file_put_contents(self::FILE_NAME, $yaml);
     }
 
     // /**
