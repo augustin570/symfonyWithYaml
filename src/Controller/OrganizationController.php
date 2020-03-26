@@ -49,10 +49,16 @@ class OrganizationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="organization_edit", methods={"GET","POST"})
+     * @Route("/{name}/edit", name="organization_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Organization $organization): Response
+    public function edit(Request $request, OrganizationRepository $organizationRepository, string $name): Response
     {
+        $organization = $organizationRepository->findOneByName($name);
+
+        if ($organization === null) {
+            return $this->redirectToRoute('organization_index');
+        }
+
         $form = $this->createForm(OrganizationType::class, $organization);
         $form->handleRequest($request);
 

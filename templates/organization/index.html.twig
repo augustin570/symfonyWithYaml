@@ -19,7 +19,7 @@
                 <td>{{ organization.name }}</td>
                 <td>{{ organization.description }}</td>
                 <td>
-                    {# <a href="{{ path('organization_edit', {'name': organization.name}) }}">edit</a> #}
+                    <a href="{{ path('organization_edit', {'name': organization.name | lower}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

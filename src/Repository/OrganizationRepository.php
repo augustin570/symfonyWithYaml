@@ -25,6 +25,20 @@ class OrganizationRepository extends ServiceEntityRepository
         return Yaml::parseFile('organizations.yaml')['organizations'];
     }
 
+    public function findOneByName(string $name)
+    {
+        $name = strtolower($name);
+        $organizations = Yaml::parseFile('organizations.yaml')['organizations'];
+
+        foreach ($organizations as $organization) {
+            if ($name == strtolower($organization['name'])) {
+                return new Organization($organization);
+            }
+        }
+
+        return null;
+    }
+
     // /**
     //  * @return Organization[] Returns an array of Organization objects
     //  */

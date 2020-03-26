@@ -26,6 +26,14 @@ class Organization
      */
     private $description;
 
+    public function __construct(?array $organization)
+    {
+        if ($organization) {
+            $this->name = $organization["name"];
+            $this->description = $organization["description"];
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;
