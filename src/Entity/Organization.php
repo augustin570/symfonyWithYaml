@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,11 +28,20 @@ class Organization
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="organization")
+     */
+    private $users;
+
     public function __construct(?array $organization = null)
     {
+        $this->users = new ArrayCollection();
         if ($organization) {
             $this->name = $organization["name"];
             $this->description = $organization["description"];
+            foreach ($organization["users"] as $user) {
+                $this->users->add(new User($user));
+            }
         }
     }
 
@@ -67,6 +78,37 @@ class Organization
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getOrganization() === $this) {
+                $user->setOrganization(null);
+            }
+        }
 
         return $this;
     }

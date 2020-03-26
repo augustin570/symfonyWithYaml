@@ -31,6 +31,21 @@ class User
      */
     private $password;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $organization;
+
+    public function __construct(?array $user = null)
+    {
+        if ($user) {
+            $this->name = $user["name"];
+            $this->role = $user["role"];
+            $this->password = $user["password"];
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +83,18 @@ class User
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getOrganization(): ?Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(?Organization $organization): self
+    {
+        $this->organization = $organization;
 
         return $this;
     }

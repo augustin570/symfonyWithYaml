@@ -3,8 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Organization;
+use App\Form\UserType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,6 +21,11 @@ class OrganizationType extends AbstractType
                 'attr' => [
                     'rows' => 5
                 ]
+            ])
+            ->add('users', CollectionType::class, [
+                'entry_type' => UserType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
             ])
         ;
     }

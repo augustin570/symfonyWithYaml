@@ -1,4 +1,7 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
+    <ul class="tags" data-prototype="{{ form_widget(form.users.vars.prototype)|e('html_attr') }}">
+
+</ul>
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
