@@ -39,8 +39,10 @@ class Organization
         if ($organization) {
             $this->name = $organization["name"];
             $this->description = $organization["description"];
-            foreach ($organization["users"] as $user) {
-                $this->users->add(new User($user));
+            if (isset($organization["users"])) {
+                foreach ($organization["users"] as $user) {
+                    $this->users->add(new User($user));
+                }
             }
         }
     }

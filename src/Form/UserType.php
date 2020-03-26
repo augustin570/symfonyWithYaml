@@ -23,7 +23,8 @@ class UserType extends AbstractType
                     'CTO' =>  new \StdClass('CTO'),
                     'SALES' =>  new \StdClass('SALES'),
                 ],
-                'multiple' => true
+                'multiple' => true,
+                'required' => false
             ])
             ->add('password', TextType::class)
         ;
