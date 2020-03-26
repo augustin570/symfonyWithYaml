@@ -54,6 +54,14 @@ class OrganizationRepository extends ServiceEntityRepository
         file_put_contents(self::FILE_NAME, $yaml);
     }
 
+    public function add(Organization $organization)
+    {
+        $organizations = $this->findAll();
+        $organizations[] = $organization->toArray();
+        $yaml = Yaml::dump(['organizations' => $organizations]);
+        file_put_contents(self::FILE_NAME, $yaml);
+    }
+
     // /**
     //  * @return Organization[] Returns an array of Organization objects
     //  */

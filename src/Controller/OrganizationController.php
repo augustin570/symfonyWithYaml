@@ -28,16 +28,14 @@ class OrganizationController extends AbstractController
     /**
      * @Route("/new", name="organization_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, OrganizationRepository $organizationRepository): Response
     {
         $organization = new Organization();
         $form = $this->createForm(OrganizationType::class, $organization);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($organization);
-            $entityManager->flush();
+            $organizationRepository->add($organization);
 
             return $this->redirectToRoute('organization_index');
         }
@@ -63,6 +61,7 @@ class OrganizationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            die("ok");
 
 
             return $this->redirectToRoute('organization_index');
